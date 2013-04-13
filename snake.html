@@ -1,0 +1,674 @@
+
+<html>
+<head>
+
+	<title>Snake</title>
+	<link rel="stylesheet" href="snake.css" type="text/css"/>
+
+	<script type="text/javascript" src="three.js"></script>
+	<script type="text/javascript" src="Three.FirstPersonControls.js"></script>
+	<script type="text/javascript" src="LinkedList.js"></script>
+	<script type="text/javascript" src="gauge.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="apple.js"></script>
+	<script type="text/javascript" src="snake.js"></script>
+	<script type="text/javascript" src="graphics.js"></script>
+
+	<style>canvas { width: 100%; height: 100% }</style>
+
+	 <script>
+	// 	$(function() {
+	// 		startUp();
+	// 	});
+	 </script>
+
+</head>
+<body id="body" onLoad="startUp()">
+
+<!-- <audio id='music'>
+    <source id='musicsrc' src='music/valley.mp3'>
+</audio>
+<audio id='effect'>
+    <source id='effectsrc' src='effect/start-mario1.mp3'>
+</audio> -->
+
+	<script>
+
+	// $(function() {
+	// 	startUp();
+	// });
+
+
+// var WIDTH = window.innerWidth,
+// 	HEIGHT = window.innerHeight,
+// 	ASPECT = WIDTH / HEIGHT,
+// 	GRIDSIZE = 10,
+// 	UNITSIZE = 300,
+// 	WALLHEIGHT = UNITSIZE / 3,
+// 	MOVESPEED = 300,
+// 	STARTLENGTH = 600,
+// 	LOOKSPEED = 0.050,
+// 	APPLE = -10,
+// 	GAPPLE = -11,
+// 	AIR = 0;
+
+// //grid of the world
+// var map = new Array(GRIDSIZE);
+// for (var i = 0; i < GRIDSIZE; i++) {
+// 	map[i] = new Array(GRIDSIZE);
+// 	for (var j = 0; j < GRIDSIZE; j++) {
+// 		map[i][j] = new Array(GRIDSIZE);
+// 		for (var k = 0; k < GRIDSIZE; k++) {
+// 			map[i][j][k] = 0;
+// 		}
+// 	}
+// }
+// var mapW = map.length, mapH = map[0].length, mapD = map[0][0].length;
+
+// //apple stuff
+// var rApple = new Apple(APPLE);
+// var gApple = new Apple(GAPPLE);
+
+// function Apple(colorFlag) {
+// 	this.flag = colorFlag;
+// 	this.position = new THREE.Vector3(0,0,0);
+// 	if (colorFlag == APPLE) {
+// 		this.geometry = new THREE.SphereGeometry(UNITSIZE/1.75,16,16);
+// 		this.material = new THREE.MeshLambertMaterial({color: 0xFF0000});
+// 	} else if (colorFlag = GAPPLE) {
+// 		this.geometry = new THREE.SphereGeometry(UNITSIZE/4,16,16)
+// 		this.material = new THREE.MeshLambertMaterial({color: 0xFF8C00});
+// 	}
+// 	this.sphere = new THREE.Mesh(this.geometry, this.material);
+// }
+
+// var applesEaten = 0;
+// function scored(theApple) {
+// 	applesEaten++;
+// 	snake.ate(theApple);
+// 	$('#score').text(applesEaten);
+// 	$('#score').fadeIn();
+// 	setTimeout(function() {
+// 		$('#score').fadeOut();
+// 	}, 3000);
+// 	theApple.randomize();
+// }
+
+// Apple.prototype = {
+// 	//randomize apple location
+// 	randomize: function() {
+// 		//remove existing apple
+// 		map[this.position.x][this.position.y][this.position.z] = AIR;
+
+// 		//get new apple location
+// 		this.position.x = Math.floor(Math.random()*GRIDSIZE);
+// 		this.position.y = Math.floor(Math.random()*GRIDSIZE);
+// 		this.position.z = Math.floor(Math.random()*GRIDSIZE);
+
+// 		//mark new apple location
+// 		map[this.position.x][this.position.y][this.position.z] = this.flag;
+
+// 		//move apple object to new location
+// 		this.sphere.position.x = (this.position.x-GRIDSIZE/2)*UNITSIZE+UNITSIZE/2;
+// 		this.sphere.position.y =  this.position.y*UNITSIZE;
+// 		this.sphere.position.z = (this.position.z-GRIDSIZE/2)*UNITSIZE+UNITSIZE/2;
+// 	}
+// }
+
+//snake stuff
+// var snake;
+// function Snake(name) {
+// 	this.name = name;
+// 	this.sections = new LinkedList();
+// 	this.direction = STOP;
+// 	this.newSectionLocation = null;
+// 	this.length = STARTLENGTH;
+// 	this.traces = [];
+// 	this.speed = MOVESPEED;
+// }
+// function Snake(name, headPos) {
+// 	this.name = name;
+// 	this.sections = new LinkedList();
+// 	this.sections.add(headPos);
+// 	this.direction = STOP;
+// 	this.newSectionLocation = null;
+// 	this.length = STARTLENGTH;
+// 	this.traces = [];
+// 	this.speed = MOVESPEED;
+// }
+// Snake.prototype = {
+
+// 	//just scored/ate the apple
+// 	ate: function(theApple) {
+// 		//add a section right at the end, but don't place it till next turn
+// 		var tip = this.sections.tipOfTail();
+// 		// this.newSectionLocation = new THREE.Vector3(tip.x,tip.y,tip.z);
+// 		if (theApple.flag == APPLE)
+// 			this.speed = Math.floor(this.speed += 100);
+// 		else if (theApple.flag == GAPPLE)
+// 			this.length = Math.floor(this.length += 100);
+// 		controls.movementSpeed = this.speed;
+// 		speed_gauge.set(this.speed);
+// 		length_gauge.set(this.length)	;
+// 	},
+// 	grow: function() {
+// 		// if (this.newSectionLocation) {
+// 		// 	this.sections.add(new THREE.Vector3(
+// 		// 		this.newSectionLocation.x,
+// 		// 		this.newSectionLocation.y,
+// 		// 		this.newSectionLocation.z));
+// 		// 	this.newSectionLocation = null;
+// 		// 	console.log(this.name+" grew!")
+// 		// 	console.log(this.sections);
+// 		// }
+// 	},
+// 	tail: function() {
+// 		var newTrace = new THREE.Mesh(traceGeometry, traceMaterial);
+// 		var roundedPos = gridToCoord(coordToGrid(camera.position));
+// 		//newTrace.position.x = roundedPos.x;
+// 		//newTrace.position.y = roundedPos.y;
+// 		//newTrace.position.z = roundedPos.z;
+// 		newTrace.position.x = camera.position.x;
+// 		newTrace.position.y = camera.position.y;
+// 		newTrace.position.z = camera.position.z;
+// 		this.traces.splice(0,0,newTrace);
+// 		scene.add(newTrace);
+
+// 		if (this.traces[this.length-1]) {
+// 			scene.remove(this.traces[this.length-1]);
+// 			this.traces.splice(this.length-1,1);
+// 		}
+// 	}
+// }
+
+
+// // Global vars
+// var t = THREE, scene, camera, renderer, controls, clock, projector, model, skin, speed_gauge, length_gauge;
+// var runAnim = true, mouse = { x: 0, y: 0 };
+
+// var ATR = 3.1415926536/180.0; //angle to radians
+// var fov = 50, near = 0.1, far = 10000;
+
+// function animate() {
+// 	if (runAnim) {
+// 		requestAnimationFrame(animate);
+// 	}
+// 	render();
+// }
+
+// function init() {
+
+// 	scene = new THREE.Scene();
+// 	clock = new THREE.Clock();
+
+// 	camera = new THREE.PerspectiveCamera(fov, aspectRatio, near, far);
+// 	scene.add(camera);
+// 	//make sure camera is inside a block, not halfway between two
+// 	camera.position.x += UNITSIZE/2;
+// 	camera.position.z += UNITSIZE/2;
+
+// 	snake = new Snake("Snakey", coordToGrid(camera.position));
+
+// 	//init apples
+// 	rApple = new Apple(APPLE);
+// 	scene.add(rApple.sphere);
+// 	rApple.randomize();
+
+// 	gApple = new Apple(GAPPLE);
+// 	scene.add(gApple.sphere);
+// 	gApple.randomize();
+
+// 	//setup first person controls
+// 	controls = new THREE.FirstPersonControls(camera);
+// 	controls.movementSpeed = MOVESPEED;
+// 	controls.lookSpeed = LOOKSPEED;
+// 	controls.snakeMode = true;
+
+// 	//put all the objects in the world
+// 	createWorld();
+
+// 	//set up the web renderer and 
+// 	renderer = new THREE.WebGLRenderer();
+// 	renderer.setSize(WIDTH,HEIGHT);
+// 	document.body.appendChild(renderer.domElement);
+
+// 	//add score, coord, and start button hud
+// 	$('body').append('<div id="score" class="score">Snakey 3D</div>');
+// 	// $('body').append('<div id="snake_length" class="snake_length">o</div>');
+// 	$('body').append('<div id="start_button" class="start_button">Click to Start</div>');
+// 	$('body').append('<canvas id="speed_gauge" class="speed_gauge"></canvas>');
+// 	$('body').append('<canvas id="length_gauge" class="length_gauge"></canvas>');
+
+// 	//start!
+// 	$('body').one('click', function(e) {
+// 		e.preventDefault();
+// 		$('#start_button').fadeOut();
+// 		$('#score').fadeOut();
+// 		speed_gauge.set(MOVESPEED);
+// 		controls.moveForward = true;
+
+// 		$('#music')[0].pause();
+// 		$('#musicsrc')[0].src='music/valley-remix.mp3';
+// 		$('#music')[0].load();
+
+// 		$('#effectsrc')[0].src='effects/start-mario1.wav';
+// 		$('#effect')[0].load();
+// 		$('#effect')[0].play();
+// 		$('#effect')[0].addEventListener("ended", function() {
+// 			$('#music')[0].play();
+// 		});
+
+
+// 		// $('#musicsrc')[0].src='music/RAM.mp3';
+// 		// $('#music')[0].load();
+// 		// $('#music')[0].play();		
+// 	});
+
+// 	//snake spedometer
+// 	var opts = {
+// 	  lines: 12, // The number of lines to draw
+// 	  angle: 0.15, // The length of each line
+// 	  lineWidth: 0.44, // The line thickness
+// 	  pointer: {
+// 	    length: 0.9, // The radius of the inner circle
+// 	    strokeWidth: 0.035, // The rotation offset
+// 	    color: '#000000' // Fill color
+// 	  },
+// 	  colorStart: '#FF0000',   // Colors
+// 	  colorStop: '#FF0000',    // just experiment with them
+// 	  strokeColor: '#FFFFFF',   // to see which ones work best for you
+// 	  generateGradient: true
+// 	};
+
+// 	//setup speed gauge
+// 	var target = document.getElementById('speed_gauge'); // your canvas element
+// 	speed_gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+// 	speed_gauge.maxValue = 1000; // set max gauge value
+// 	speed_gauge.animationSpeed = 32; // set animation speed (32 is default value)
+// 	speed_gauge.set(0); // set actual value
+
+// 	//setup length gauge
+// 	var opts = {
+// 	  lines: 12, // The number of lines to draw
+// 	  angle: 0.35, // The length of each line
+// 	  lineWidth: 0.1, // The line thickness
+// 	  colorStart: '#FF8C00',   // Colors
+// 	  colorStop: '#FF8C00',    // just experiment with them
+// 	  strokeColor: '#EEEEEE',  // to see which ones work best for you
+// 	  generateGradient: true
+// 	};
+// 	var target_len = document.getElementById('length_gauge')
+// 	length_gauge = new Donut(target_len).setOptions(opts);
+// 	length_gauge.maxValue = 1500;
+// 	length_gauge.animationSpeed = 32;
+// 	length_gauge.set(STARTLENGTH);
+// }
+
+// function createWorld() {
+// 	var units = mapW;
+
+// 	//floor
+// 	var floorTexture = new THREE.ImageUtils.loadTexture('clouds3.jpg');
+// 	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+// 	floorTexture.repeat.set(2,2);
+// 	var floor = new THREE.Mesh(
+// 		new THREE.CubeGeometry(units*UNITSIZE,0.1,units*UNITSIZE),
+// 		new THREE.MeshLambertMaterial({color: 0xEDCBA0}/*, {map: floorTexture, side: THREE.DoubleSide}*/)
+// 	);
+// 	floor.position.y = -UNITSIZE/2;
+// 	scene.add(floor);
+
+// 	//slighly visible boundary walls and ceiling
+// 	var cloudTexture = new THREE.ImageUtils.loadTexture('clouds3.jpg');
+// 	cloudTexture.wrapS = cloudTexture.wrapT = THREE.RepeatWrapping;
+// 	cloudTexture.repeat.set(8,1);
+// 	var boundaryWallGeometry = new THREE.CubeGeometry(UNITSIZE,units*UNITSIZE,UNITSIZE);
+// 	var boundaryCeilingGeometry = new THREE.CubeGeometry((units+2)*UNITSIZE,UNITSIZE,(units+2)*UNITSIZE);
+// 	var boundaryMaterial = new THREE.MeshLambertMaterial({color: 0x1234FF, opacity: 0.5, transparent: true/*, map: cloudTexture, side: THREE.DoubleSide*/});
+
+// 	var ceiling = new THREE.Mesh(boundaryCeilingGeometry, boundaryMaterial);
+// 	ceiling.position.y = GRIDSIZE*UNITSIZE + 1;
+// 	scene.add(ceiling);
+
+// 	//walls
+// 	var wallCube = new THREE.CubeGeometry(10, WALLHEIGHT, UNITSIZE);
+// 	var wallMaterials = new THREE.MeshLambertMaterial({color: 0xFFF00F});
+
+// 	//lighting
+// 	var directionalLight1 = new THREE.DirectionalLight( 0xF7EFBE, 0.7);
+// 	directionalLight1.position.set( 0.5, 1, 0.5);
+// 	scene.add(directionalLight1);
+
+// 	var directionalLight2 = new THREE.DirectionalLight( 0xF7EFBE, 0.5);
+// 	directionalLight2.position.set( -0.5, 1, -0.5);
+// 	scene.add(directionalLight2);
+
+// 	var wallGeometry = new THREE.CubeGeometry(UNITSIZE,UNITSIZE,GRIDSIZE*UNITSIZE);
+// 	var wallMaterial = new THREE.MeshLambertMaterial({color: 0x97694F});
+// 	var wall = {};
+
+// 	wall['left'] = new THREE.Mesh(wallGeometry, wallMaterial);
+// 	wall['left'].position.x = -GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['left-boundary'] = new THREE.Mesh(boundaryWallGeometry, boundaryMaterial);
+// 	wall['left-boundary'].position.x = -GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['left-boundary'].position.y = GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['left-boundary'].position.z = GRIDSIZE*UNITSIZE/2+UNITSIZE/2;
+
+// 	wall['right'] = new THREE.Mesh(wallGeometry, wallMaterial);
+// 	wall['right'].position.x = GRIDSIZE*UNITSIZE/2+UNITSIZE/2;
+// 	wall['right-boundary'] = new THREE.Mesh(boundaryWallGeometry, boundaryMaterial);
+// 	wall['right-boundary'].position.x = GRIDSIZE*UNITSIZE/2+UNITSIZE/2;
+// 	wall['right-boundary'].position.y = GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['right-boundary'].position.z = GRIDSIZE*UNITSIZE/2+UNITSIZE/2;
+
+// 	wall['top'] = new THREE.Mesh(wallGeometry, wallMaterial);
+// 	wall['top'].rotation.y = 90*ATR;
+// 	wall['top'].position.z = GRIDSIZE*UNITSIZE/2+UNITSIZE/2;
+// 	wall['top-boundary'] = new THREE.Mesh(boundaryWallGeometry, boundaryMaterial);
+// 	wall['top-boundary'].position.x = -GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['top-boundary'].position.y = GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['top-boundary'].position.z = -GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+
+
+// 	wall['bottom'] = new THREE.Mesh(wallGeometry, wallMaterial);
+// 	wall['bottom'].rotation.y = 90*ATR;
+// 	wall['bottom'].position.z = -GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['bottom-boundary'] = new THREE.Mesh(boundaryWallGeometry, boundaryMaterial);
+// 	wall['bottom-boundary'].position.x = GRIDSIZE*UNITSIZE/2+UNITSIZE/2;
+// 	wall['bottom-boundary'].position.y = GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+// 	wall['bottom-boundary'].position.z = -GRIDSIZE*UNITSIZE/2-UNITSIZE/2;
+
+// 	scene.add(wall['left']);
+// 	scene.add(wall['left-boundary']);
+// 	scene.add(wall['right']);
+// 	scene.add(wall['right-boundary']);
+// 	scene.add(wall['top']);
+// 	scene.add(wall['top-boundary']);
+// 	scene.add(wall['bottom']);
+// 	scene.add(wall['bottom-boundary']);
+
+// 	var wireframeCubeGeometry = new THREE.CubeGeometry(UNITSIZE,UNITSIZE,UNITSIZE);
+// 	var wireframeCubeMaterial = new THREE.MeshLambertMaterial({color: 0x1234FF, opacity: 0.5, transparent: true, wireframe:true});
+
+// 	 for (var i = 0; i < GRIDSIZE; i++)
+// 	 	for (var j = 0; j < GRIDSIZE; j++)
+// 	 		for (var k = 0; k < GRIDSIZE; k++) {
+// 	 			var newBlock = new THREE.Mesh(wireframeCubeGeometry, wireframeCubeMaterial);
+// 	 			newBlock.position.x = (i-GRIDSIZE/2)*UNITSIZE+UNITSIZE/2;
+// 	 			newBlock.position.y = j*UNITSIZE;
+// 	 			newBlock.position.z = (k-GRIDSIZE/2)*UNITSIZE+UNITSIZE/2;
+// 	 			scene.add(newBlock);
+// 	 		}
+
+
+
+
+
+
+// 	// create a point light
+// 	var pointLight = new THREE.PointLight(0xFFFFFF);
+
+// 	// set its position
+// 	pointLight.position.x = 10;
+// 	pointLight.position.y = 0;
+// 	pointLight.position.z = 50;
+
+// 	// add to the scene
+// 	scene.add(pointLight);
+// }
+
+
+// var movex = 0.05;
+// var movey = 0.05;
+
+// var lastX = 0, lastY = 0, lastZ = 0;
+// var dX = 0, dY = 0, dZ = 0;
+
+//snake movement direction aliases
+// var STOP = 32;
+// var LEFT = 37;
+// var UP = 38;
+// var RIGHT = 39;
+// var DOWN = 40;
+// var IN = 16;
+// var OUT = 18;
+
+// var speed = 0.25;
+
+// var snakeDir = STOP;
+
+// $(document).ready(function() {
+// 	init();
+// 	animate();
+// 	console.log('inited and animating');
+// 	console.log($('#musicsrc')[0]);
+// 	//$('#musicsrc')[0].src='music/RAM.mp3';
+// 	console.log($('#music')[0]);
+// 	$('#music')[0].play();
+// });
+
+// $(document).mousemove(function(e){
+// 	$('#status').html(e.pageX +', '+ e.pageY);
+// 	mouse.x = (e.pageX / WIDTH) * 2 - 1;
+// 	mouse.y = - (e.pageY / HEIGHT) * 2 + 1;
+// });
+
+// function coordToGrid(v) {
+// 	return new THREE.Vector3(Math.round((v.x - UNITSIZE/2)/UNITSIZE+GRIDSIZE/2),Math.round(v.y/UNITSIZE),Math.round((v.z - UNITSIZE/2)/UNITSIZE+GRIDSIZE/2));
+// }
+
+// function gridToCoord(v) {
+// 	return new THREE.Vector3(Math.round((v.x-GRIDSIZE/2)*UNITSIZE+UNITSIZE/2),Math.round(v.y*UNITSIZE),Math.round((v.z-GRIDSIZE/2)*UNITSIZE+UNITSIZE/2));
+// }
+
+// var traceGeometry = new THREE.SphereGeometry(UNITSIZE/10,16,16)
+// var traceMaterial = new THREE.MeshLambertMaterial({color: 0x00FF00, opacity: 0.5, transparent: true});
+
+// function render() {
+
+// 	snake.grow();
+
+// 	var delta = clock.getDelta();
+// 	controls.update(delta); //move the camera
+
+// 	snake.tail();
+
+// 	var cameraVector = coordToGrid(camera.position);
+// 	var coordText = "";
+// 	coordText += (cameraVector.x<GRIDSIZE && cameraVector.x >= 0) ? cameraVector.x : "...";
+// 	coordText += ",";
+// 	coordText += (cameraVector.y<GRIDSIZE && cameraVector.y >= 0) ? cameraVector.y : "...";
+// 	coordText += ",";
+// 	coordText += (cameraVector.z<GRIDSIZE && cameraVector.z >= 0) ? cameraVector.z : "...";
+// 	$('#curr_coord').text(coordText);
+
+// 	if (cameraVector.equals(rApple.position))
+// 		scored(rApple);
+// 	if (cameraVector.equals(gApple.position))
+// 		scored(gApple);
+
+// 	//move the snake
+// 	// switch (snakeDir) {
+// 	// 	case STOP:
+// 	// 	break;
+
+// 	// 	case UP:
+// 	// 	sphere.position.y = Math.min(sphere.position.y+speed,20-1.2);
+// 	// 	break;
+
+// 	// 	case DOWN:
+// 	// 	sphere.position.y = Math.max(sphere.position.y-speed,-20+1.2);
+// 	// 	break;
+
+// 	// 	case LEFT:
+// 	// 	sphere.position.x = Math.max(sphere.position.x-speed,-20+1.2);
+// 	// 	break;
+
+// 	// 	case RIGHT:
+// 	// 	sphere.position.x = Math.min(sphere.position.x+speed,20-1.2);
+// 	// 	break;
+
+// 	// 	case IN:
+// 	// 	sphere.position.z = Math.max(sphere.position.z-speed,0);
+// 	// 	break;
+
+// 	// 	case OUT:
+// 	// 	sphere.position.z = Math.min(sphere.position.z+speed,40);
+// 	// 	break;
+// 	// }
+
+// 	renderer.render(scene, camera);
+// }
+
+// Leap.loop(controllerOptions, function(frame) {
+// 	var frameString = "Frame ID: " + frame.id  + "<br />"
+// 	+ "Timestamp: " + frame.timestamp + " &micro;s<br />"
+// 	+ "Hands: " + frame.hands.length + "<br />"
+// 	+ "Fingers: " + frame.fingers.length + "<br />"
+// 	+ "Tools: " + frame.tools.length + "<br />";
+// 	// + "Gestures: " + frame.gestures.length + "<br />";
+
+// 	// Frame motion factors
+// 	if (previousFrame) {
+// 		var translation = frame.translation(previousFrame);
+// 		frameString += "Translation: " + vectorToString(translation) + " mm <br />";
+
+// 		var rotationAxis = frame.rotationAxis(previousFrame);
+// 		var rotationAngle = frame.rotationAngle(previousFrame);
+// 		frameString += "Rotation axis: " + vectorToString(rotationAxis, 2) + "<br />";
+// 		frameString += "Rotation angle: " + rotationAngle.toFixed(2) + " radians<br />";
+
+// 		var scaleFactor = frame.scaleFactor(previousFrame);
+// 		frameString += "Scale factor: " + scaleFactor.toFixed(2) + "<br />";
+// 	}
+
+// 	// Display Hand object data
+// 	var handString = "";
+// 	if (frame.hands.length > 0) {
+// 		for (var i = 0; i < frame.hands.length; i++) {
+// 			var hand = frame.hands[i];
+
+// 			handString += "Hand ID: " + hand.id + "<br />";
+// 			handString += "Direction: " + vectorToString(hand.direction, 2) + "<br />";
+// 			handString += "Palm normal: " + vectorToString(hand.palmNormal, 2) + "<br />";
+// 			handString += "Palm position: " + vectorToString(hand.palmPosition) + " mm<br />";
+// 			handString += "Palm velocity: " + vectorToString(hand.palmVelocity) + " mm/s<br />";
+// 			handString += "Sphere center: " + vectorToString(hand.sphereCenter) + " mm<br />";
+// 			handString += "Sphere radius: " + hand.sphereRadius.toFixed(1) + " mm<br />";
+
+// 	    // And so on...
+// 	}
+// }
+
+// 	// Display Pointable (finger and tool) object data
+// 	var pointableString = "";
+// 	if (frame.pointables.length > 0) {
+// 		for (var i = 0; i < frame.pointables.length; i++) {
+// 			var pointable = frame.pointables[i];
+
+// 			pointableString += "Pointable ID: " + pointable.id + "<br />";
+// 			pointableString += "Belongs to hand with ID: " + pointable.handId + "<br />";
+
+// 			if (pointable.tool) {
+// 				pointableString += "Classified as a tool <br />";
+// 				pointableString += "Length: " + pointable.length.toFixed(1) + " mm<br />";
+// 				pointableString += "Width: "  + pointable.width.toFixed(1) + " mm<br />";
+// 			}
+// 			else {
+// 				pointableString += "Classified as a finger<br />";
+// 				pointableString += "Length: " + pointable.length.toFixed(1) + " mm<br />";
+// 			}
+
+// 			pointableString += "Direction: " + vectorToString(pointable.direction, 2) + "<br />";
+// 			pointableString += "Tip position: " + vectorToString(pointable.tipPosition) + " mm<br />";
+// 			pointableString += "Tip velocity: " + vectorToString(pointable.tipVelocity) + " mm/s<br />";
+// 		}
+// 	}
+
+// 	// Display Gesture object data
+// 	var gestureString = "";
+// 	// if (frame.gestures.length > 0) {
+// 	// 	for (var i = 0; i < frame.gestures.length; i++) {
+// 	// 		var gesture = frame.gestures[i];
+// 	// 		gestureString += "Gesture ID: " + gesture.id + ", "
+// 	// 		+ "type: " + gesture.type + ", "
+// 	// 		+ "state: " + gesture.state + ", "
+// 	// 		+ "hand IDs: " + gesture.handIds.join(", ") + ", "
+// 	// 		+ "pointable IDs: " + gesture.pointableIds.join(", ") + ", "
+// 	// 		+ "duration: " + gesture.duration + " &micro;s, ";
+
+// 	// 		switch (gesture.type) {
+// 	// 			case "circle":
+// 	// 			gestureString += "center: " + vectorToString(gesture.center) + " mm, "
+// 	// 			+ "normal: " + vectorToString(gesture.normal, 2) + ", "
+// 	// 			+ "radius: " + gesture.radius.toFixed(1) + " mm, "
+// 	// 			+ "progress: " + gesture.progress.toFixed(2) + " rotations";
+// 	// 			break;
+// 	// 			case "swipe":
+// 	// 			gestureString += "start position: " + vectorToString(gesture.startPosition) + " mm, "
+// 	// 			+ "current position: " + vectorToString(gesture.position) + " mm, "
+// 	// 			+ "direction: " + vectorToString(gesture.direction, 2) + ", "
+// 	// 			+ "speed: " + gesture.speed.toFixed(1) + " mm/s";
+// 	// 			break;
+// 	// 			case "screenTap":
+// 	// 			case "keyTap":
+// 	// 			gestureString += "position: " + vectorToString(gesture.position) + " mm, "
+// 	// 			+ "direction: " + vectorToString(gesture.direction, 2);
+// 	// 			break;
+// 	// 			default:
+// 	// 			gestureString += "unkown gesture type";
+// 	// 		}
+// 	// 		gestureString += "<br />";
+// 	// 	}
+// 	// }
+
+// 	previousFrame = frame;
+// 	// console.log(frame)
+// });
+
+// function checkLibrary() {
+//   if (typeof Leap === "undefined") {
+//     document.getElementById("main").innerHTML = "The Leap JavaScript client library (leap.js file) was not found. Please download the library from the GitHub project at <a href='https://github.com/leapmotion/leapjs'>https://github.com/leapmotion/leapjs</a>."
+//     alert("The Leap JavaScript client library (leap.js file) was not found. Please download the latest version from the GitHub project at https://github.com/leapmotion/leapjs");
+//   }
+// }
+
+// function vectorToString(vector, digits) {
+//   if (typeof digits === "undefined") {
+//     digits = 1;
+//   }
+//   return "(" + vector[0].toFixed(digits) + ", "
+//              + vector[1].toFixed(digits) + ", "
+//              + vector[2].toFixed(digits) + ")";
+// }
+
+
+// // Handle window resizing
+// $(window).resize(function() {
+// 	WIDTH = window.innerWidth;
+// 	HEIGHT = window.innerHeight;
+// 	ASPECT = WIDTH / HEIGHT;
+// 	if (camera) {
+// 		camera.aspect = ASPECT;
+// 		camera.updateProjectionMatrix();
+// 	}
+// 	if (renderer) {
+// 		renderer.setSize(WIDTH, HEIGHT);
+// 	}
+// });
+
+// // Stop moving around when the window is unfocused (keeps my sanity!)
+// $(window).focus(function() {
+// 	if (controls) controls.freeze = false;
+// });
+// $(window).blur(function() {
+// 	if (controls) controls.freeze = true;
+// });
+
+
+	
+
+	</script>
+
+</body>
+</html>

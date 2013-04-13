@@ -1,0 +1,88 @@
+#score {
+	position: absolute;
+	top: 1em;
+	color: white;
+	font-size: 5em;
+	text-align: center;
+	width: 100%;
+	padding: 0.25em;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 100;
+	/* start off hidden so this displays only after first score */
+	/*display: none; */
+}
+
+audio {
+	position: absolute;;
+	bottom: 1em;
+	width: 50%;
+	text-align: center;
+}
+
+#start_button {
+	position: absolute;
+	color: white;
+	bottom: 50%;
+	z-index: 100;
+	font-size: 3em;
+	width: 100%;
+	padding: 0.25em;
+	background-color: rgba(0,0,0,0.5);
+	text-align: center;
+}
+
+#snake_length {
+	position: absolute;
+	color: white;
+	bottom: 1em;
+	right: 1em;
+	z-index: 100;
+	font-size: 4em;
+	width: 5em;
+	padding: 0.25em;
+	background-color: rgba(0,0,0,0.5);
+}
+
+#speed_gauge {
+	position: absolute;
+	color: white;
+	bottom: 1em;
+	left: 1em;
+	z-index: 100;
+	font-size: 4em;
+	width: 3em;
+	height: 1.5em;
+	padding: 0.25em;
+	background-color: rgba(0,0,0,0.5);
+	border-radius: 10px;
+}
+
+#length_gauge {
+	position: absolute;
+	color: white;
+	bottom: 1em;
+	right: 1em;
+	z-index: 100;
+	font-size: 4em;
+	width: 3em;
+	height: 1.5em;
+	padding: 0.25em;
+	background-color: rgba(0,0,0,0.5);
+	border-radius: 10px;
+}
+
+body {
+	cursor: crosshair;
+	background-image: url('clouds.png');
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-family: Georgia, Helvetica, sans-serif;
+	font-weight: bold;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
